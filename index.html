@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>9 Patitas - Snacks Naturales</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+    <style>
+        :root {
+            --azul-claro: #D5E7E8;
+            --azul-medio: #5F82A2;
+            --crema: #FDF9F1;
+            --azul-oscuro: #075171;
+            --verde-azul: #017F97;
+            --cian: #8BCCDB;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Fredoka', sans-serif;
+            background-color: var(--crema);
+            color: var(--azul-oscuro);
+            scroll-behavior: smooth;
+        }
+
+        /* HEADER */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: white;
+            position: sticky;
+            top: 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            z-index: 1000;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .logo-area img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 12px;
+            border: 2px solid var(--cian);
+        }
+
+        nav a {
+            margin-left: 15px;
+            text-decoration: none;
+            color: var(--azul-medio);
+            font-weight: 500;
+        }
+
+        /* HERO */
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, var(--azul-claro), var(--crema));
+            border-bottom: 5px dashed var(--cian);
+        }
+
+        .hero h1 { font-size: 55px; margin: 0; }
+        .hero p { font-size: 1.4rem; color: var(--azul-medio); font-style: italic; }
+
+        /* CARDS GENERALES */
+        .card {
+            background-color: white;
+            margin: 30px auto;
+            padding: 35px;
+            border-radius: 25px;
+            max-width: 850px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+            border: 2px solid var(--azul-claro);
+        }
+
+        h2 { color: var(--verde-azul); border-bottom: 3px solid var(--azul-claro); display: inline-block; margin-bottom: 20px; }
+        
+        .grid-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        /* PRODUCTOS POPULARES */
+        .product-item {
+            margin-bottom: 15px;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid var(--azul-claro);
+        }
+
+        .product-item summary {
+            background-color: var(--verde-azul);
+            color: white;
+            padding: 18px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .product-item summary:hover { background-color: var(--azul-medio); }
+
+        .product-content {
+            background-color: white;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .product-img {
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 3px solid var(--azul-claro);
+        }
+
+        .product-info { flex: 1; }
+        .product-info h3 { margin-top: 0; color: var(--azul-oscuro); font-size: 1.1rem; border-bottom: 1px solid var(--azul-claro); padding-bottom: 5px; }
+        
+        /* BOTONES CONTACTO */
+        .contact-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-link, .btn-maps, .btn-bot, .btn-pedido {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s, background-color 0.3s;
+            border: none;
+            cursor: pointer;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .social-link { background-color: #E1306C; }
+        .btn-maps { background-color: var(--azul-oscuro); }
+        .btn-bot { background-color: var(--verde-azul); }
+        .btn-pedido { background-color: #FF8C42; }
+
+        .social-link:hover, .btn-maps:hover, .btn-bot:hover, .btn-pedido:hover { transform: scale(1.05); }
+
+        /* MODAL PANTALLA DIVIDIDA */
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); }
+        .modal-content { 
+            background: white; 
+            margin: 2% auto; 
+            padding: 25px; 
+            width: 95%; 
+            max-width: 1000px; 
+            height: 85vh; 
+            border-radius: 25px; 
+            position: relative;
+            display: flex;
+            gap: 20px;
+        }
+        .close-btn { position: absolute; right: 20px; top: 15px; font-size: 28px; cursor: pointer; color: var(--azul-oscuro); z-index: 10; }
+
+        /* Lado Izquierdo: Lista */
+        .modal-left { width: 60%; overflow-y: auto; padding-right: 10px; }
+        .full-product-item { padding: 15px; border-bottom: 2px solid var(--azul-claro); cursor: pointer; }
+        .full-product-item h4 { margin: 0; color: var(--verde-azul); font-size: 1.1rem; }
+        .details-box { display: none; padding-top: 10px; font-size: 0.95rem; color: var(--azul-medio); }
+        .add-btn { background: var(--verde-azul); color: white; border: none; padding: 8px 15px; border-radius: 20px; margin-top: 10px; cursor: pointer; font-family: 'Fredoka'; }
+
+        /* Lado Derecho: Carrito Fijo */
+        .modal-right { width: 40%; background: var(--azul-claro); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; border: 2px solid var(--cian); }
+        .cart-section { flex-grow: 1; overflow-y: auto; }
+        .cart-section h3 { margin-top: 0; color: var(--azul-oscuro); font-size: 1.2rem; }
+        .cart-list { list-style: none; padding: 0; }
+        .cart-list li { background: white; margin-bottom: 8px; padding: 12px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .remove-btn { color: #E1306C; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
+
+        footer { text-align: center; padding: 30px; background-color: var(--azul-oscuro); color: white; margin-top: 50px; }
+
+        @media (max-width: 850px) {
+            .modal-content { flex-direction: column; height: 90vh; }
+            .modal-left, .modal-right { width: 100%; height: 50%; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo-area">
+        <img src="https://i.ibb.co/bM541sLr/IMG-20260119-211308.jpg" alt="Logo">
+        9 PATITAS
+    </div>
+    <nav>
+        <a href="#quienes">Nosotros</a>
+        <a href="#productos">Menú</a>
+        <a href="#contacto">Contacto</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>9 PATITAS</h1>
+    <p>"Dulces momentos para tu mejor amigo"</p>
+</section>
+
+<section id="quienes" class="card">
+    <h2>¿Quiénes somos?</h2>
+    <p>Somos un proyecto joven, creativo y apasionado por el bienestar de las mascotas. 9 Patitas se dedica a la creación de snacks naturales para todo tipo de mascotas, usando la <strong>avena</strong> como ingrediente estrella para garantizar salud y felicidad.</p>
+</section>
+
+<section id="mision" class="card">
+    <div class="grid-info">
+        <div>
+            <h2>Misión</h2>
+            <p>Elaborar snacks naturales con ingredientes frescos y de calidad, reduciendo el consumo de productos procesados.</p>
+        </div>
+        <div>
+            <h2>Visión</h2>
+            <p>Ser la marca líder en postres para mascotas a nivel nacional, reconocida por nuestra innovación y amor animal.</p>
+        </div>
+    </div>
+</section>
+
+<section id="productos" class="card">
+    <h2 style="text-align: center; display: block;">Postres Populares 🐾</h2>
+    
+    <details class="product-item">
+        <summary>1. BIANCA WOFFLE (WAFFLE) <span>▼</span></summary>
+        <div class="product-content">
+            <img src="https://i.ibb.co/MD9nmwZg/IMG-20260420-WA0014.jpg" class="product-img">
+            <div class="product-info">
+                <h3>Sabor: AVENA Y MIEL</h3>
+                <p>Suave y esponjoso, ideal para estómagos sensibles. Aporta fibra y energía natural.</p>
+            </div>
+        </div>
+    </details>
+
+    <details class="product-item">
+        <summary>2. YAKY PIE (TARTALETA) <span>▼</span></summary>
+        <div class="product-content">
+            <img src="https://i.ibb.co/7Mzzs7Q/IMG-20260420-WA0015.jpg" class="product-img">
+            <div class="product-info">
+                <h3>Sabor: MANZANA</h3>
+                <p>Vitaminas y fibra en una tarta natural sin azúcares añadidos.</p>
+            </div>
+        </div>
+    </details>
+
+    <details class="product-item">
+        <summary>3. GUDI BONES (GALLETA) <span>▼</span></summary>
+        <div class="product-content">
+            <img src="https://i.ibb.co/DPbXgT4r/IMG-20260420-WA0010.jpg" class="product-img">
+            <div class="product-info">
+                <h3>Sabor: MIEL Y AVENA</h3>
+                <p>Crujientes galletas en forma de huesito. ¡El premio clásico que aman!</p>
+            </div>
+        </div>
+    </details>
+
+    <details class="product-item">
+        <summary>4. PUPPAKE PIPO (CUPCAKE) <span>▼</span></summary>
+        <div class="product-content">
+            <img src="https://i.ibb.co/4R52D9ns/IMG-20260420-WA0013.jpg" class="product-img">
+            <div class="product-info">
+                <h3>Sabor: ZANAHORIA Y AVENA</h3>
+                <p>Esponjoso y digestivo con frosting de yogur. Ideal para festejos.</p>
+            </div>
+        </div>
+    </details>
+
+    <details class="product-item">
+        <summary>5. MORITA POPS (PALETA HELADA) <span>▼</span></summary>
+        <div class="product-content">
+            <img src="https://i.ibb.co/yFTFKP3f/IMG-20260420-WA0011.jpg" class="product-img">
+            <div class="product-info">
+                <h3>Sabor: YOGURT Y FRESA</h3>
+                <p>Refrescante e hidratante. Ayuda a la flora intestinal en días calurosos.</p>
+            </div>
+        </div>
+    </details>
+
+    <details class="product-item">
+        <summary>6. BLANCA CAKE (PASTEL) <span>▼</span></summary>
+        <div class="product-content">
+            <img src="https://i.ibb.co/35tJzwjS/IMG-20260420-WA0012.jpg" class="product-img">
+            <div class="product-info">
+                <h3>Sabor: POLLO Y CAMOTE</h3>
+                <p>Proteína magra y vitaminas A y C. El favorito de los paladares exigentes.</p>
+            </div>
+        </div>
+    </details>
+</section>
+
+<section id="contacto" class="card" style="text-align: center;">
+    <h2>¡Hablemos!</h2>
+    <div class="contact-grid">
+        <a href="Https://maps.app.goo.gl/VhJGpRkzWixuwehP7" target="_blank" class="btn-maps">
+            <span class="material-symbols-rounded">location_on</span> Ubicación
+        </a>
+        <a href="https://www.instagram.com/9_patitass" target="_blank" class="social-link">
+            <span class="material-symbols-rounded">photo_camera</span> Instagram
+        </a>
+        <a href="https://9patitas.github.io/Mione/" target="_blank" class="btn-bot">
+            <span class="material-symbols-rounded">smart_toy</span> ChatBot Mione
+        </a>
+        <button onclick="document.getElementById('modalCat').style.display='block'" class="btn-pedido">
+            <span class="material-symbols-rounded">shopping_cart</span> Inicia tu pedido aqui
+        </button>
+    </div>
+</section>
+
+<div id="modalCat" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="document.getElementById('modalCat').style.display='none'">×</span>
+        
+        <div class="modal-left">
+            <h2>Menú de 50 Postres</h2>
+            <p>Toca el nombre para detalles y agrega a tu lista.</p>
+            <div id="lista-full"></div>
+        </div>
+
+        <div class="modal-right">
+            <div class="cart-section">
+                <h3>Tu carrito es el siguiente: 🛒</h3>
+                <ul id="cart-list" class="cart-list">
+                    <li>Tu lista está vacía</li>
+                </ul>
+            </div>
+            <button onclick="finalizarPedido()" class="btn-pedido" style="width: 100%; margin-top: 15px;">Finalizar Pedido</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const productos = [
+        {n: "PUPPAKE PIPO (CUPCAKE)", i: "Zanahoria, Avena, Yogur natural", d: "Esponjoso y nutritivo."},
+        {n: "PUGGI DONUTS (DONA)", i: "Manzana, Canela, Avena", d: "Horneada con amor."},
+        {n: "GUDI BONES (GALLETA)", i: "Miel pura, Avena", d: "Crujiente premio clásico."},
+        {n: "BUBUJA ICE CREAM (HELADO)", i: "Plátano, Maní", d: "Refrescante sin lácteos."},
+        {n: "YAKY MUFFIN (MUFFIN)", i: "Calabaza fresca, Avena", d: "Fibra natural."},
+        {n: "CELESTE TREATS (SNACK)", i: "Avena, Plátano", d: "Premios rápidos."},
+        {n: "BLANCA CAKE (PASTEL)", i: "Pollo, Camote, Avena", d: "Pastel artesanal."},
+        {n: "BIANCA BITES (GALLETA)", i: "Avena, Cacahuate", d: "Proteína vegetal."},
+        {n: "MORITA POPS (PALETA)", i: "Yogur, Fresa", d: "Fría e hidratante."},
+        {n: "PIPO CRUNCH (GALLETA)", i: "Zanahoria, Miel", d: "Textura firme."},
+        {n: "PUGGI ROLL (ROLLITO)", i: "Plátano, Avena", d: "Suave para masticar."},
+        {n: "GUDI BAR (BARRITA)", i: "Avena y frutas", d: "Energía pura."},
+        {n: "BURBUJA BERRY CUP (HELADO)", i: "Arándanos, Yogur", d: "Antioxidante."},
+        {n: "YAKY PIE (TARTALETA)", i: "Manzana, Avena", d: "Frutal sin azúcar."},
+        {n: "CELESTE CHOCO (BROWNIE)", i: "Algarrobo, Avena", d: "Seguro para ellos."},
+        {n: "BLANCA YOGUPAW (HELADO)", i: "Yogur natural", d: "Probiótico."},
+        {n: "BIANCA WOOFLIE (WAFFLE)", i: "Avena, Miel", d: "Hecho a mano."},
+        {n: "MORITA COOKIE (GALLETA)", i: "Fresa, Avena", d: "Naturalmente dulce."},
+        {n: "PIPO HONEY BONES (GALLETA)", i: "Miel, Avena", d: "Sabor irresistible."},
+        {n: "PUGGI MUFFCAKE (MUFFIN)", i: "Calabaza, Yogur", d: "Esponjosito."},
+        {n: "GUDI ICE BITE (HELADO)", i: "Plátano, Coco", d: "Bocados fríos."},
+        {n: "BURBUJA CUPCAKE (CUPCAKE)", i: "Coco, Avena", d: "Aroma tropical."},
+        {n: "YAKI CRUNCHIES (GALLETA)", i: "Manzana, Canela", d: "Gran crujido."},
+        {n: "CELESTE BONE MIX (GALLETA)", i: "Manzana, Pera", d: "Mix de sabores."},
+        {n: "BLANCA BLISS CAKE (PASTEL)", i: "Pollo, Avena", d: "Ideal festejos."},
+        {n: "BIANCA CREAM PAW (CREMOSO)", i: "Mango, Yogur", d: "Mousse frutal."},
+        {n: "MORITA DONUT (DONA)", i: "Yogur, Fresa", d: "Color natural."},
+        {n: "PIPO CHEWY BAR (BARRITA)", i: "Miel, Linaza", d: "Fácil de digerir."},
+        {n: "PUGGI TART (TARTALETA)", i: "Manzana, Avena", d: "Mini gourmet."},
+        {n: "GUDI POSICLE (PALETA)", i: "Caldo de pollo", d: "Salada e hidratante."},
+        {n: "BURBUJA PUDDING (CREMOSO)", i: "Coco, Yogur", d: "Postre para lamer."},
+        {n: "YAKY BONES DELUXE (GALLETA)", i: "Maní, Avena", d: "Extra sabor."},
+        {n: "CELESTE PIE (TARTALETA)", i: "Fresa, Avena", d: "Base crujiente."},
+        {n: "CELESTE CRUNCH (MUFFIN)", i: "Plátano, Avena", d: "Mucha textura."},
+        {n: "BIANCA BROWNIE (BROWNIE)", i: "Algarrobo, Plátano", d: "Rico y denso."},
+        {n: "MORITA TREATS (SNACK)", i: "Fresa, Avena", d: "Deshidratado."},
+        {n: "PIPO ICE BAR (HELADO)", i: "Mango, Coco", d: "Paleta ligera."},
+        {n: "PUGGI COOKIE PAW (GALLETA)", i: "Avena, Huevo", d: "Forma de pata."},
+        {n: "GUDI CAKE MINI (PASTEL)", i: "Camote, Pollo", d: "Individual."},
+        {n: "BURBUJA BONES (GALLETA)", i: "Coco, Miel", d: "Nutritiva."},
+        {n: "YAKY YOGURT POP (PALETA)", i: "Yogur, Miel", d: "Higiene intestinal."},
+        {n: "CELESTE CRUNCH (GALLETA)", i: "Manzana", d: "Puro sabor."},
+        {n: "BLANCA DONUT DELUXE (DONA)", i: "Miel, Avena", d: "Premiun."},
+        {n: "BIANCA HONEY PAW (GALLETA)", i: "Miel", d: "Dulce premio."},
+        {n: "MORITA BERRY CAKE (PASTEL)", i: "Fresas, Avena", d: "Esponjoso."},
+        {n: "PIPO PUFFS (BOLITAS)", i: "Avena, Plátano", d: "Bolitas snack."},
+        {n: "PUGGI PIE MINI (TARTALETA)", i: "Zanahoria", d: "Sabor natural."},
+        {n: "GUDI DONUT CRUNCH (DONA)", i: "Cacahuate, Avena", d: "Muy crujiente."},
+        {n: "BURBUJA CREAM PAW (CREMOSO)", i: "Yogur natural", d: "Mousse suave."},
+        {n: "YAKY CELEBRATION CAKE (PASTEL)", i: "Pollo, Manzana", d: "El gran favorito."}
+    ];
+
+    let carrito = [];
+
+    const listFull = document.getElementById('lista-full');
+    productos.forEach((p, index) => {
+        listFull.innerHTML += `
+            <div class="full-product-item" onclick="toggleDetails(${index})">
+                <h4>${p.n}</h4>
+                <div id="det-${index}" class="details-box">
+                    <p><strong>Ingredientes:</strong> ${p.i}</p>
+                    <p><strong>Descripción:</strong> ${p.d}</p>
+                    <button class="add-btn" onclick="agregarAlCarrito(event, '${p.n}')">Agregar a mi lista +</button>
+                </div>
+            </div>`;
+    });
+
+    function toggleDetails(index) {
+        const d = document.getElementById(`det-${index}`);
+        d.style.display = d.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function agregarAlCarrito(event, nombre) {
+        event.stopPropagation();
+        carrito.push(nombre);
+        actualizarCarritoUI();
+    }
+
+    function quitarDelCarrito(index) {
+        carrito.splice(index, 1);
+        actualizarCarritoUI();
+    }
+
+    function actualizarCarritoUI() {
+        const cartUl = document.getElementById('cart-list');
+        if (carrito.length === 0) {
+            cartUl.innerHTML = "<li>Tu lista está vacía</li>";
+        } else {
+            cartUl.innerHTML = carrito.map((prod, idx) => `
+                <li>
+                    <span>${prod}</span>
+                    <span class="remove-btn" onclick="quitarDelCarrito(${idx})">Eliminar</span>
+                </li>
+            `).join('');
+        }
+    }
+
+    function finalizarPedido() {
+        if (carrito.length === 0) {
+            alert("Por favor, agrega al menos un postre.");
+            return;
+        }
+        const numero = "525651559870"; // Tu WhatsApp aquí
+        const mensaje = encodeURIComponent("¡Hola! Me gustaría pedir los siguientes postres: " + carrito.join(", "));
+        window.open(`https://wa.me/${numero}?text=${mensaje}`, "_blank");
+    }
+</script>
+
+<footer>
+    <p>© 2026 9 Patitas - "Dulces momentos para tu mejor amigo"</p>
+</footer>
+
+</body>
+</html>
